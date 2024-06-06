@@ -9,23 +9,24 @@ booleanParam defaultValue: false, name: 'skip_test'
                 echo 'Hello builkd'
             }
         }
-         stage('test') {
-             when{expression {params.skip_test!= true}}
-            parallel{
-                stage('unit tst'){
-                   steps {
-                echo 'Hello unit testing '
-            }}
-                 stage('integration tst'){
-                   steps {
-                echo 'Hello integration test'
-            }}
-            }
-        }
+        
+
         stage('deploy') {
             steps {
-                echo 'Hello deply'
+                execute_stage('deploy',params.skip_test)
             }
         }
     }
+}
+
+def execute_stage(stage_name,skip){
+stage(stage_name){
+if(skip)
+{
+echo "skippping ${stage_name} stage"
+return
+}
+
+
+}
 }
